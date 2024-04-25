@@ -1,5 +1,7 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { tap } from 'rxjs/operators';
+import { first } from 'rxjs/operators';
 
 import { Course } from '../model/course';
 
@@ -8,11 +10,15 @@ import { Course } from '../model/course';
 })
 export class CoursesService {
 
+  private readonly API = '/assets/courses.json';
+
   constructor(private httpClient: HttpClient) { }
 
-  list(): Course[] {
-    return [
-      { _id: '1', name: 'Angular', category: 'Front-end'}
-    ];
+  list() {
+    return this.httpClient.get<Course[]>(this.API)
+    .pipe(//permite manipular de modo reativo
+      first(),//uma vez chamado, fecha a conexão http. Pode usar tbm o take(1), abre a con uma vez para executar a chamada
+      tap(courses => console.log(courses))
+    );
   }
 }
