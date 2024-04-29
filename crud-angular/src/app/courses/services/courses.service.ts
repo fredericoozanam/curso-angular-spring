@@ -18,7 +18,7 @@ export class CoursesService {
     return this.httpClient.get<Course[]>(this.API)
     .pipe(//permite manipular de modo reativo
       first(),//uma vez chamado, fecha a conexão http. Pode usar tbm o take(1), abre a con uma vez para executar a chamada
-      delay(5000),
+      delay(2000),
       tap(courses => console.log(courses))
     );
   }
